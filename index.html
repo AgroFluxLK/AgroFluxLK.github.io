@@ -3,390 +3,404 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AgroFlux Dashboard</title>
+    <title>AgroFlux Market Intelligence</title>
     <style>
-      /* --- Import Font --- */
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
 
-      /* --- Global Styles & Variables --- */
       :root {
-        --bg-color: #161a25;
-        --main-content-bg: #1e2231;
-        --card-bg: #272c3f;
-        --primary-text: #ffffff;
-        --secondary-text: #a7a9be;
-        --accent-green: #34d399;
-        --accent-orange: #f97316;
-        --accent-blue: #60a5fa;
-        --border-color: #3a3f58;
+        --bg-light: #f8f9fa;
+        --bg-white: #ffffff;
+        --primary-text: #212529;
+        --secondary-text: #6c757d;
+        --border-color: #e9ecef;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+          0 2px 4px -1px rgba(0, 0, 0, 0.04);
+
+        --accent-primary: #007bff;
+        --accent-success: #28a745;
+        --accent-warning: #ffc107;
+        --accent-danger: #dc3545;
       }
 
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
+        font-family: "Open Sans", sans-serif;
       }
 
       body {
-        background-color: var(--bg-color);
+        background-color: #dee2e6;
         color: var(--primary-text);
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        padding: 20px;
+        padding: 2rem;
       }
 
-      /* --- Main Dashboard Container --- */
       .dashboard-container {
         display: flex;
-        width: 1280px;
-        height: 720px;
-        background-color: var(--main-content-bg);
-        border-radius: 20px;
+        flex-direction: column;
+        width: 1440px;
+        height: 810px;
+        background-color: var(--bg-light);
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       }
 
-      /* --- Sidebar --- */
-      .sidebar {
-        width: 240px;
-        background-color: var(--bg-color);
-        padding: 25px 20px;
+      /* --- Top Header --- */
+      .header {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        padding: 0 25px;
+        height: 70px;
+        background-color: var(--bg-white);
+        border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
       }
 
       .logo {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 40px;
-        padding: 10px 5px;
-        border: 2px dashed var(--border-color);
-        text-align: center;
-        color: var(--secondary-text);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 100%;
+      }
+
+      .logo img {
+        /* Fix for logo overflow */
+        max-width: 100%;
+        max-height: 40px;
+        height: auto;
+        width: auto;
+      }
+
+      .nav-menu {
+        display: flex;
+        margin-left: 40px;
+        gap: 10px;
       }
 
       .nav-menu a {
-        display: block;
-        color: var(--secondary-text);
+        padding: 10px 15px;
         text-decoration: none;
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        color: var(--secondary-text);
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        transition: all 0.2s ease-in-out;
       }
 
       .nav-menu a.active,
       .nav-menu a:hover {
-        background-color: var(--accent-green);
-        color: var(--bg-color);
+        color: var(--primary-text);
+        background-color: var(--bg-light);
       }
 
-      /* --- Main Content --- */
-      .main-content {
-        flex-grow: 1;
-        padding: 30px;
+      .header-actions {
+        margin-left: auto;
         display: flex;
-        flex-direction: column;
-      }
-
-      /* --- Header --- */
-      .header {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        gap: 20px;
       }
 
-      .header h1 {
-        font-size: 1.8rem;
+      .header-actions .date-selector {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        font-size: 0.9rem;
         font-weight: 600;
       }
 
-      .user-profile {
-        display: flex;
-        align-items: center;
-        background-color: var(--card-bg);
-        padding: 5px 15px 5px 5px;
-        border-radius: 20px;
+      /* --- Main Content Area --- */
+      .main-content {
+        padding: 25px;
+        flex-grow: 1;
+        overflow-y: auto;
       }
 
-      .user-profile img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
-
-      /* --- Main Grid Layout --- */
       .content-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: auto 1fr;
+        grid-template-columns: repeat(12, 1fr);
         gap: 25px;
-        flex-grow: 1;
       }
 
       .card {
-        background-color: var(--card-bg);
-        border-radius: 15px;
+        background-color: var(--bg-white);
+        border-radius: 8px;
         padding: 20px;
-      }
-
-      /* --- Vegetable Selector --- */
-      .vegetable-selector {
-        grid-column: 1 / -1; /* Span full width */
-        display: flex;
-        gap: 15px;
-      }
-
-      .veg-item {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 15px;
-        border-radius: 10px;
+        box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
-        cursor: pointer;
-        transition: all 0.3s ease;
       }
 
-      .veg-item.active,
-      .veg-item:hover {
-        background-color: var(--accent-green);
-        border-color: var(--accent-green);
-        color: var(--bg-color);
-      }
-      .veg-item.active .market-name,
-      .veg-item:hover .market-name {
-        color: var(--bg-color);
-      }
-
-      .veg-item .icon {
-        font-size: 2rem;
-      }
-      .veg-item .veg-name {
-        font-weight: 600;
+      .card-title {
         font-size: 1rem;
-      }
-      .veg-item .market-name {
-        font-size: 0.8rem;
+        font-weight: 700;
         color: var(--secondary-text);
-        transition: color 0.3s ease;
-      }
-
-      /* --- Main Price Chart --- */
-      .price-chart-card {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .price-chart-card h2 {
         margin-bottom: 20px;
       }
 
-      .chart-container {
-        flex-grow: 1;
+      /* --- Main Chart Card --- */
+      .main-chart-card {
+        grid-column: 1 / 9;
+        grid-row: 1 / 2;
+        height: 400px;
       }
 
-      /* --- Side Cards --- */
-      .side-cards {
+      .chart-container {
+        width: 100%;
+        height: 85%;
+      }
+
+      /* --- Price Detail Card (Wholesale vs Retail) --- */
+      .price-detail-card {
+        grid-column: 9 / 13;
+        grid-row: 1 / 2;
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        justify-content: space-around;
       }
 
-      .side-cards h3 {
-        margin-bottom: 15px;
+      .price-item .label {
+        font-size: 1rem;
+        color: var(--secondary-text);
         font-weight: 600;
+        margin-bottom: 5px;
       }
 
-      .seasonal-trends .trend-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .seasonal-trends .value {
-        font-size: 1.5rem;
+      .price-item .value {
+        font-size: 2.5rem;
         font-weight: 700;
-        color: var(--accent-orange);
+        color: var(--primary-text);
       }
-      .seasonal-trends .value.positive {
-        color: var(--accent-green);
-      }
-
-      .seasonal-trends .label {
-        font-size: 0.9rem;
+      .price-item .value .currency {
+        font-size: 1.5rem;
         color: var(--secondary-text);
+        margin-left: 5px;
       }
 
-      .small-chart-card .legend {
+      /* --- Market Comparison Card --- */
+      .market-comparison-card {
+        grid-column: 1 / 7;
+        grid-row: 2 / 3;
+      }
+
+      .bar-chart-item {
         display: flex;
+        align-items: center;
         gap: 15px;
-        font-size: 0.8rem;
-        color: var(--secondary-text);
-        margin-top: 15px;
+        margin-bottom: 15px;
       }
 
-      .legend span::before {
-        content: "";
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 5px;
+      .bar-chart-item .label {
+        width: 100px;
+        font-weight: 600;
+        font-size: 0.9rem;
       }
-      .legend .pettah::before {
-        background-color: var(--accent-orange);
+
+      .bar-chart-item .bar-container {
+        flex-grow: 1;
+        height: 25px;
+        background-color: var(--bg-light);
+        border-radius: 4px;
       }
-      .legend .dambulla::before {
-        background-color: var(--accent-green);
+
+      .bar-chart-item .bar {
+        height: 100%;
+        background-color: var(--accent-primary);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.8rem;
       }
-      .legend .narahenpita::before {
-        background-color: var(--accent-blue);
+
+      /* --- Daily Outlook / Predictions Table --- */
+      .predictions-card {
+        grid-column: 7 / 13;
+        grid-row: 2 / 3;
+      }
+
+      .prediction-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .prediction-table th,
+      .prediction-table td {
+        padding: 12px 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.9rem;
+      }
+
+      .prediction-table th {
+        font-weight: 700;
+        color: var(--secondary-text);
+      }
+
+      .price-change {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .price-change.up {
+        color: var(--accent-danger);
+      }
+      .price-change.down {
+        color: var(--accent-success);
       }
     </style>
   </head>
   <body>
     <div class="dashboard-container">
-      <aside class="sidebar">
-        <div class="logo">AgroFlux</div>
+      <header class="header">
+        <div class="logo">
+          <img src="logo-trans.png" alt="AgroFlux Logo" />
+        </div>
         <nav class="nav-menu">
           <a href="#" class="active">Dashboard</a>
-          <a href="#">Predictions</a>
-          <a href="#">Markets</a>
-          <a href="#">Reports</a>
+          <a href="#">Analysis</a>
+          <a href="#">API Docs</a>
           <a href="#">Settings</a>
         </nav>
-      </aside>
+        <div class="header-actions">
+          <input type="date" class="date-selector" value="2025-07-23" />
+        </div>
+      </header>
 
       <main class="main-content">
-        <header class="header">
-          <h1>Vegetable Dashboard</h1>
-          <div class="user-profile">
-            <img src="https://i.pravatar.cc/30" alt="User Avatar" />
-            <span>Admin</span>
-          </div>
-        </header>
-
         <div class="content-grid">
-          <div class="vegetable-selector">
-            <div class="veg-item active">
-              <span class="icon">🍆</span>
-              <span class="veg-name">Brinjal</span>
-              <span class="market-name">Dambulla</span>
-            </div>
-            <div class="veg-item">
-              <span class="icon">🍅</span>
-              <span class="veg-name">Tomato</span>
-              <span class="market-name">Pettah</span>
-            </div>
-            <div class="veg-item">
-              <span class="icon">🥕</span>
-              <span class="veg-name">Carrot</span>
-              <span class="market-name">Narahenpita</span>
-            </div>
-            <div class="veg-item">
-              <span class="icon">🎃</span>
-              <span class="veg-name">Pumpkin</span>
-              <span class="market-name">All Markets</span>
-            </div>
-          </div>
-
-          <div class="card price-chart-card">
-            <h2>Brinjal Wholesale Price (Dambulla)</h2>
+          <div class="card main-chart-card">
+            <h3 class="card-title">Brinjal Price Trend (Dambulla)</h3>
             <div class="chart-container">
               <svg
                 width="100%"
                 height="100%"
-                viewBox="0 0 500 200"
-                preserveAspectRatio="none"
+                viewBox="0 0 800 300"
+                preserveAspectRatio="xMidYMid meet"
               >
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#34d399" stop-opacity="0.4" />
-                    <stop offset="100%" stop-color="#34d399" stop-opacity="0" />
-                  </linearGradient>
-                </defs>
-                <polyline
-                  fill="url(#areaGradient)"
-                  stroke="#34d399"
-                  stroke-width="2"
-                  points="
-                                0,120 50,100 100,130 150,90 200,110 250,80 300,95 350,60 400,85 450,70 500,90
-                            "
+                <line
+                  x1="0"
+                  y1="50"
+                  x2="800"
+                  y2="50"
+                  stroke="#E9ECEF"
+                  stroke-width="1.5"
                 />
-                <circle
-                  cx="350"
-                  cy="60"
-                  r="4"
-                  fill="#1e2231"
-                  stroke="#34d399"
-                  stroke-width="2"
+                <line
+                  x1="0"
+                  y1="125"
+                  x2="800"
+                  y2="125"
+                  stroke="#E9ECEF"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="0"
+                  y1="200"
+                  x2="800"
+                  y2="200"
+                  stroke="#E9ECEF"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="0"
+                  y1="275"
+                  x2="800"
+                  y2="275"
+                  stroke="#E9ECEF"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M 0 150 Q 50 120, 100 160 T 200 140 Q 250 180, 300 200 T 400 180 Q 450 150, 500 170 T 600 190 Q 650 160, 700 150 T 800 180"
+                  stroke="#007BFF"
+                  fill="none"
+                  stroke-width="3"
                 />
               </svg>
             </div>
           </div>
 
-          <div class="side-cards">
-            <div class="card seasonal-trends">
-              <h3>Seasonal Insights</h3>
-              <div class="trend-item">
-                <span class="label">New Year Peak</span>
-                <span class="value positive">+18%</span>
-              </div>
-              <div class="trend-item">
-                <span class="label">Vesak Demand</span>
-                <span class="value positive">+12%</span>
-              </div>
-              <div class="trend-item">
-                <span class="label">Lunar Cycle Corr.</span>
-                <span class="value">0.76</span>
-              </div>
+          <div class="card price-detail-card">
+            <h3 class="card-title">Brinjal Price (Dambulla)</h3>
+            <div class="price-item">
+              <div class="label">Wholesale Price</div>
+              <div class="value">310<span class="currency">LKR</span></div>
             </div>
+            <div class="price-item">
+              <div class="label">Retail Price</div>
+              <div class="value">385<span class="currency">LKR</span></div>
+            </div>
+          </div>
 
-            <div class="card small-chart-card">
-              <h3>Carrot Price Comparison</h3>
-              <div class="chart-container">
-                <svg
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 200 80"
-                  preserveAspectRatio="none"
-                >
-                  <polyline
-                    fill="none"
-                    stroke="#f97316"
-                    stroke-width="2"
-                    points="0,40 20,45 40,35 60,50 80,42 100,55 120,48 140,60 160,50 180,65 200,58"
-                  />
-                  <polyline
-                    fill="none"
-                    stroke="#34d399"
-                    stroke-width="2"
-                    points="0,60 20,55 40,65 60,52 80,60 100,50 120,58 140,50 160,55 180,45 200,52"
-                  />
-                  <polyline
-                    fill="none"
-                    stroke="#60a5fa"
-                    stroke-width="2"
-                    points="0,20 20,35 40,25 60,40 80,32 100,45 120,38 140,50 160,40 180,55 200,48"
-                  />
-                </svg>
-              </div>
-              <div class="legend">
-                <span class="pettah">Pettah</span>
-                <span class="dambulla">Dambulla</span>
-                <span class="narahenpita">Narahenpita</span>
+          <div class="card market-comparison-card">
+            <h3 class="card-title">Brinjal Wholesale Price Comparison</h3>
+            <div class="bar-chart-item">
+              <div class="label">Pettah</div>
+              <div class="bar-container">
+                <div class="bar" style="width: 100%; background-color: #dc3545">
+                  LKR 350
+                </div>
               </div>
             </div>
+            <div class="bar-chart-item">
+              <div class="label">Dambulla</div>
+              <div class="bar-container">
+                <div class="bar" style="width: 88%; background-color: #007bff">
+                  LKR 310
+                </div>
+              </div>
+            </div>
+            <div class="bar-chart-item">
+              <div class="label">Narahenpita</div>
+              <div class="bar-container">
+                <div class="bar" style="width: 80%; background-color: #ffc107">
+                  LKR 280
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card predictions-card">
+            <h3 class="card-title">Daily Outlook & Predictions</h3>
+            <table class="prediction-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Predicted Price (WS)</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🍆 Brinjal</td>
+                  <td>LKR 315.00</td>
+                  <td class="price-change up">▲ 5.00</td>
+                </tr>
+                <tr>
+                  <td>🍅 Tomato</td>
+                  <td>LKR 440.00</td>
+                  <td class="price-change down">▼ 10.00</td>
+                </tr>
+                <tr>
+                  <td>🥕 Carrot</td>
+                  <td>LKR 285.00</td>
+                  <td class="price-change up">▲ 5.00</td>
+                </tr>
+                <tr>
+                  <td>🎃 Pumpkin</td>
+                  <td>LKR 120.00</td>
+                  <td class="price-change down">▼ 2.50</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </main>
