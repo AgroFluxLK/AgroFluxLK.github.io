@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroFlux Dashboard</title>
+    <style>
+        /* --- Import Font --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        /* --- Global Styles & Variables --- */
+        :root {
+            --bg-color: #161a25;
+            --main-content-bg: #1e2231;
+            --card-bg: #272c3f;
+            --primary-text: #ffffff;
+            --secondary-text: #a7a9be;
+            --accent-green: #34d399;
+            --accent-orange: #f97316;
+            --accent-blue: #60a5fa;
+            --border-color: #3a3f58;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* --- Main Dashboard Container --- */
+        .dashboard-container {
+            display: flex;
+            width: 1280px;
+            height: 720px;
+            background-color: var(--main-content-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 240px;
+            background-color: var(--bg-color);
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            padding: 10px 5px;
+            border: 2px dashed var(--border-color);
+            text-align: center;
+            color: var(--secondary-text);
+        }
+
+        .nav-menu a {
+            display: block;
+            color: var(--secondary-text);
+            text-decoration: none;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 5px 15px 5px 5px;
+            border-radius: 20px;
+        }
+
+        .user-profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* --- Main Grid Layout --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 25px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        /* --- Vegetable Selector --- */
+        .vegetable-selector {
+            grid-column: 1 / -1; /* Span full width */
+            display: flex;
+            gap: 15px;
+        }
+        
+        .veg-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .veg-item.active, .veg-item:hover {
+             background-color: var(--accent-green);
+             border-color: var(--accent-green);
+             color: var(--bg-color);
+        }
+        .veg-item.active .market-name, .veg-item:hover .market-name {
+            color: var(--bg-color);
+        }
+
+        .veg-item .icon { font-size: 2rem; }
+        .veg-item .veg-name { font-weight: 600; font-size: 1rem; }
+        .veg-item .market-name { font-size: 0.8rem; color: var(--secondary-text); transition: color 0.3s ease;}
+
+        /* --- Main Price Chart --- */
+        .price-chart-card {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .price-chart-card h2 { margin-bottom: 20px; }
+        
+        .chart-container {
+            flex-grow: 1;
+        }
+
+        /* --- Side Cards --- */
+        .side-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .side-cards h3 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .seasonal-trends .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .seasonal-trends .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+        .seasonal-trends .value.positive {
+            color: var(--accent-green);
+        }
+        
+        .seasonal-trends .label {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+        
+        .small-chart-card .legend {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            margin-top: 15px;
+        }
+        
+        .legend span::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .legend .pettah::before { background-color: var(--accent-orange); }
+        .legend .dambulla::before { background-color: var(--accent-green); }
+        .legend .narahenpita::before { background-color: var(--accent-blue); }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">AgroFlux</div>
+            <nav class="nav-menu">
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Predictions</a>
+                <a href="#">Markets</a>
+                <a href="#">Reports</a>
+                <a href="#">Settings</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>Vegetable Dashboard</h1>
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/30" alt="User Avatar">
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <div class="content-grid">
+                <div class="vegetable-selector">
+                    <div class="veg-item active">
+                        <span class="icon">🍆</span>
+                        <span class="veg-name">Brinjal</span>
+                        <span class="market-name">Dambulla</span>
+                    </div>
+                    <div class="veg-item">
+                        <span class="icon">🍅</span>
+                        <span class="veg-name">Tomato</span>
+                        <span class="market-name">Pettah</span>
+                    </div>
+                    <div class="veg-item">
+                        <span class="icon">🥕</span>
+                        <span class="veg-name">Carrot</span>
+                        <span class="market-name">Narahenpita</span>
+                    </div>
+                    <div class="veg-item">
+                        <span class="icon">🎃</span>
+                        <span class="veg-name">Pumpkin</span>
+                        <span class="market-name">All Markets</span>
+                    </div>
+                </div>
+
+                <div class="card price-chart-card">
+                    <h2>Brinjal Wholesale Price (Dambulla)</h2>
+                    <div class="chart-container">
+                        <svg width="100%" height="100%" viewBox="0 0 500 200" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#34d399" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <polyline fill="url(#areaGradient)" stroke="#34d399" stroke-width="2" points="
+                                0,120 50,100 100,130 150,90 200,110 250,80 300,95 350,60 400,85 450,70 500,90
+                            "/>
+                             <circle cx="350" cy="60" r="4" fill="#1e2231" stroke="#34d399" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="side-cards">
+                    <div class="card seasonal-trends">
+                        <h3>Seasonal Insights</h3>
+                        <div class="trend-item">
+                            <span class="label">New Year Peak</span>
+                            <span class="value positive">+18%</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="label">Vesak Demand</span>
+                            <span class="value positive">+12%</span>
+                        </div>
+                         <div class="trend-item">
+                            <span class="label">Lunar Cycle Corr.</span>
+                            <span class="value">0.76</span>
+                        </div>
+                    </div>
+
+                    <div class="card small-chart-card">
+                         <h3>Carrot Price Comparison</h3>
+                         <div class="chart-container">
+                             <svg width="100%" height="100%" viewBox="0 0 200 80" preserveAspectRatio="none">
+                                <polyline fill="none" stroke="#f97316" stroke-width="2" points="0,40 20,45 40,35 60,50 80,42 100,55 120,48 140,60 160,50 180,65 200,58"/>
+                                <polyline fill="none" stroke="#34d399" stroke-width="2" points="0,60 20,55 40,65 60,52 80,60 100,50 120,58 140,50 160,55 180,45 200,52"/>
+                                <polyline fill="none" stroke="#60a5fa" stroke-width="2" points="0,20 20,35 40,25 60,40 80,32 100,45 120,38 140,50 160,40 180,55 200,48"/>
+                            </svg>
+                         </div>
+                         <div class="legend">
+                             <span class="pettah">Pettah</span>
+                             <span class="dambulla">Dambulla</span>
+                             <span class="narahenpita">Narahenpita</span>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
