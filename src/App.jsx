@@ -341,6 +341,8 @@ const DashboardContent = ({ data, timeRange }) => {
 
   if (data.length === 0) return <NoDataState />;
 
+  const yAxisFormatter = (tick) => `${tick.toFixed(1)}`;
+
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -376,7 +378,10 @@ const DashboardContent = ({ data, timeRange }) => {
                 tick={{ fontSize: 10 }}
                 interval="preserveStartEnd"
               />
-              <YAxis domain={["dataMin - 10", "dataMax + 10"]} />
+              <YAxis
+                domain={["dataMin - 10", "dataMax + 10"]}
+                tickFormatter={yAxisFormatter}
+              />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
               <Line
@@ -396,7 +401,7 @@ const DashboardContent = ({ data, timeRange }) => {
             <BarChart data={marketComparisonData}>
               <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
               <XAxis dataKey="market" />
-              <YAxis />
+              <YAxis tickFormatter={yAxisFormatter} />
               <Tooltip
                 cursor={{ fill: "rgba(136, 132, 216, 0.1)" }}
                 content={<CustomTooltip />}
